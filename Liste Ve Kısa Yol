@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>List Maker</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+		}
+		h1 {
+			font-size: 36px;
+			margin-bottom: 20px;
+		}
+		form label {
+			display: inline-block;
+			width: 100px;
+			text-align: right;
+			margin-right: 10px;
+		}
+		form input[type="text"] {
+			width: 300px;
+			padding: 5px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			font-size: 16px;
+			margin-bottom: 10px;
+		}
+		form button {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
+			margin-right: 10px;
+			cursor: pointer;
+		}
+		form button:hover {
+			background-color: #3e8e41;
+		}
+		ul {
+			margin-top: 20px;
+			padding-left: 0;
+			list-style: none;
+		}
+		li {
+			margin-bottom: 10px;
+			padding: 5px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			background-color: #f2f2f2;
+			overflow: hidden;
+			position: relative;
+		}
+		li a {
+			text-decoration: none;
+			color: #333;
+			font-size: 22px;
+			font-weight: bold;
+			display: block;
+			margin-bottom: 10px;
+		}
+		li button {
+			background-color: #f44336;
+			color: white;
+			padding: 5px 10px;
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
+			position: absolute;
+			right: 5px;
+			top: 5px;
+			cursor: pointer;
+		}
+		li button:hover {
+			background-color: #d32f2f;
+		}
+	</style>
+</head>
+<body>
+	<h1>List Maker</h1>
+	<form>
+		<label for="url">URL:</label>
+		<input type="text" id="url" name="url"><br><br>
+		<label for="name">Adı:</label>
+		<input type="text" id="name" name="name"><br><br>
+		<button type="button" onclick="addToList()">Listeye Ekle</button>
+		<button type="button" onclick="saveList()">Kaydet</button>
+	</form>
+	<h2>Liste:</h2>
+	<ul id="list"></ul>
+	<script>
+		// Kaydedilmiş listeyi yükle
+		window.onload = function() {
+			loadList();
+		}
+
+		function addToList() {
+			var url = document.getElementById("url").value;
+			var name = document.getElementById("name").value;
+			var list = document.getElementById("list");
+			var listItem = document.createElement("li");
+			var link = document.createElement("a");
+			link.setAttribute("href", url);
+			link.textContent = name;
+			listItem.appendChild(link);
+			var deleteButton = document.createElement("button");
+			deleteButton.textContent = "Sil";
+			deleteButton.onclick = function() {
+			
+listItem.parentNode.removeChild(listItem);
+};
+
+listItem.appendChild(deleteButton);
+list.appendChild(listItem);
+}
+
+function saveList() {
+var list = document.getElementById("list");
+var items = list.getElementsByTagName("a");
+var savedList = [];
+for (var i = 0; i < items.length; i++) {
+savedList.push({
+name: items[i].textContent,
+url: items[i].getAttribute("href")
+});
+}
+localStorage.setItem("savedList", JSON.stringify(savedList));
+alert("Liste kaydedildi.");
+}
+
+function loadList() {
+var savedList = localStorage.getItem("savedList");
+if (savedList !== null) {
+savedList = JSON.parse(savedList);
+var list = document.getElementById("list");
+for (var i = 0; i < savedList.length; i++) {
+var listItem = document.createElement("li");
+var link = document.createElement("a");
+link.setAttribute("href", savedList[i].url);
+link.textContent = savedList[i].name;
+listItem.appendChild(link);
+var deleteButton = document.createElement("button");
+deleteButton.textContent = "Sil";
+deleteButton.onclick = function() {
+listItem.parentNode.removeChild(listItem);
+};
+listItem.appendChild(deleteButton);
+list.appendChild(listItem);
+}
+}
+}
+</script>
+
+</body>
+</html>
